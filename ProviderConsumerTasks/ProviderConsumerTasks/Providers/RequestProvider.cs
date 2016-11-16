@@ -14,12 +14,21 @@ namespace ProviderConsumerTasks.Providers
         {
             this.requestQueue = requestQueue;
         }
+        
         public void SendRequest()
         {
-            CreateRequest();
+            // use an Action delegate and named method
+            Task task1 = new Task(new Action(CreateRequest));
+            // use an anonymous delegate
+            Task task2 = new Task(delegate { CreateRequest(); });
+            // use a lambda expression and a named method
+            Task task3 = new Task(() => CreateRequest());
+            // use a lambda expression and an anonymous method
+            Task task4 = new Task(() => { CreateRequest(); });
+     
         }
 
-        public void CreateRequest()
+        private void CreateRequest()
         {
             requestQueue.Enqueue(new ProviderRequest());
         }
