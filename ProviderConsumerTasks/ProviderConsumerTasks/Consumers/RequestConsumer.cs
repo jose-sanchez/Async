@@ -18,7 +18,14 @@ namespace ProviderConsumerTasks.Consumers
         }
         public void ConsumeRequest()
         {
-            ProccessOrReenqueue();
+            // use an Action delegate and named method
+            Task task1 = new Task(new Action(ProccessOrReenqueue));
+            // use an anonymous delegate
+            Task task2 = new Task(delegate { ProccessOrReenqueue(); });
+            // use a lambda expression and a named method
+            Task task3 = new Task(() => ProccessOrReenqueue());
+            // use a lambda expression and an anonymous method
+            Task task4 = new Task(() => { ProccessOrReenqueue(); });
         }
 
         private void ProccessOrReenqueue()

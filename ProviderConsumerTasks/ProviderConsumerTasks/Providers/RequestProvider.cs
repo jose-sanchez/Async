@@ -28,7 +28,12 @@ namespace ProviderConsumerTasks.Providers
             Task task3 = new Task(() => CreateRequest());
             // use a lambda expression and an anonymous method
             Task task4 = new Task(() => { CreateRequest(); });
-     
+
+            task1.Start();
+            task2.Start();
+            task3.Start();
+            task4.Start();
+
         }
 
         private void CreateRequest()
@@ -42,7 +47,6 @@ namespace ProviderConsumerTasks.Providers
         private void ConsoleShowCreatedRequestMessage(ProviderRequest request)
         {
             Console.WriteLine(String.Format("{0}:{1}", providerName, request.ConsoleProcessedMessage));
-
         }
     }
 }
