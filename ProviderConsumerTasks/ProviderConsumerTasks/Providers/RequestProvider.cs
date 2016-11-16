@@ -9,10 +9,13 @@ namespace ProviderConsumerTasks.Providers
 {
     public class RequestProvider : IProvider
     {
+        int requestID = 0;
         ConcurrentQueue<BaseRequest> requestQueue;
-        public RequestProvider(ConcurrentQueue<BaseRequest> requestQueue)
+        String providerName = String.Empty;
+        public RequestProvider(ConcurrentQueue<BaseRequest> requestQueue, String providerName)
         {
             this.requestQueue = requestQueue;
+            this.providerName = providerName;
         }
         
         public void SendRequest()
@@ -30,7 +33,16 @@ namespace ProviderConsumerTasks.Providers
 
         private void CreateRequest()
         {
-            requestQueue.Enqueue(new ProviderRequest());
+            ProviderRequest request = new ProviderRequest() { ConsoleProcessedMessage = String.Format("Request Number {0}", requestID) };
+            ConsoleShowCreatedRequestMessage(request);
+            requestQueue.Enqueue(request);
+            requestID++;
+        }
+
+        private void ConsoleShowCreatedRequestMessage(ProviderRequest request)
+        {
+            Console.WriteLine(String.Format("{0}:{1}", providerName, request.ConsoleProcessedMessage));
+
         }
     }
 }
