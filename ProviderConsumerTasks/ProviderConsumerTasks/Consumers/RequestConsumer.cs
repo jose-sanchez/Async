@@ -10,9 +10,11 @@ namespace ProviderConsumerTasks.Consumers
     public class RequestConsumer : IConsumer
     {
         ConcurrentQueue<BaseRequest> requestQueue;
-        public RequestConsumer(ConcurrentQueue<BaseRequest> requestQueue)
+        String consumerName= String.Empty;
+        public RequestConsumer(ConcurrentQueue<BaseRequest> requestQueue, String consumerName)
         {
             this.requestQueue = requestQueue;
+            this.consumerName = consumerName;
         }
         public void ConsumeRequest()
         {
@@ -40,7 +42,7 @@ namespace ProviderConsumerTasks.Consumers
 
         private void ConsoleShowProccessedRequestMessage(ProviderRequest providerRequest)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(String.Format("{0}:{1}",consumerName,providerRequest.ConsoleProcessedMessage));
         }
     }
 }
