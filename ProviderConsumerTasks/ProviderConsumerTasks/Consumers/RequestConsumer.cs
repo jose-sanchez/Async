@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProviderConsumerTasks.Consumers
@@ -26,10 +27,17 @@ namespace ProviderConsumerTasks.Consumers
             Task task3 = new Task(() => ProccessOrReenqueue());
             // use a lambda expression and an anonymous method
             Task task4 = new Task(() => { ProccessOrReenqueue(); });
+
+
+            task1.Start();
+            task2.Start();
+            task3.Start();
+            task4.Start();
         }
 
         private void ProccessOrReenqueue()
         {
+            Thread.Sleep(50);
             ProviderRequest providerRequest;
             BaseRequest request;
             if (requestQueue.TryDequeue(out request))
@@ -44,6 +52,7 @@ namespace ProviderConsumerTasks.Consumers
                     requestQueue.Enqueue(request);
                 }
             }
+            
             
         }
 

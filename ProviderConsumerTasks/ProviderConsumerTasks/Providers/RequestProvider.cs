@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProviderConsumerTasks.Providers
@@ -12,6 +13,7 @@ namespace ProviderConsumerTasks.Providers
         int requestID = 0;
         ConcurrentQueue<BaseRequest> requestQueue;
         String providerName = String.Empty;
+        private static readonly Object obj = new Object();
         public RequestProvider(ConcurrentQueue<BaseRequest> requestQueue, String providerName)
         {
             this.requestQueue = requestQueue;
@@ -38,10 +40,17 @@ namespace ProviderConsumerTasks.Providers
 
         private void CreateRequest()
         {
-            ProviderRequest request = new ProviderRequest() { ConsoleProcessedMessage = String.Format("Request Number {0}", requestID) };
+            Thread.Sleep(5000);
+            
+            ProviderRequest request;
+            lock (obj)
+            {
+                Interlocked.Add(ref requestID, 1);
+                request = new ProviderRequest() { ConsoleProcessedMessage = String.Format("Request Number {0}", requestID) };
+            }
             ConsoleShowCreatedRequestMessage(request);
             requestQueue.Enqueue(request);
-            requestID++;
+            
         }
 
         private void ConsoleShowCreatedRequestMessage(ProviderRequest request)

@@ -54,6 +54,8 @@ namespace ProviderConsumerTasks
                 }
 
             });
+
+            task4.Wait();
         }
     }
 }
